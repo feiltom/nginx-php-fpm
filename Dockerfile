@@ -3,7 +3,7 @@ FROM php:7.2-fpm
 ENV NGINX_VERSION 1.15.7-1~stretch
 ENV NJS_VERSION   1.15.7.0.2.6-1~stretch
 
-RUN apt-get update;apt-get -y install git zip zlib1g-dev libicu-dev libpng-dev g++;apt-get clean
+RUN apt-get update;apt-get -y install git zip zlib1g-dev libicu-dev libpng-dev g++ ca-certificates;apt-get clean
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');";php -r "if (hash_file('sha384', 'composer-setup.php') === '93b54496392c062774670ac18b134c3b3a95e5a5e5c8f1a9f115f203b75bf9a129d5daa8ba6a13e2cc8a1da0806388a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;";\
   php composer-setup.php --install-dir=/bin --filename=composer;php -r "unlink('composer-setup.php');"
 RUN docker-php-ext-install intl gd pdo pdo_mysql exif
@@ -95,6 +95,11 @@ RUN set -x \
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log
 RUN sed -i "s/exec/service nginx start;exec/g" /usr/local/bin/docker-php-entrypoint
+
+WORKDIR /var/apps/application
+RUN mkdir /var/www/.ssh && mkdir /var/www/.composer
+RUN chown 33:33 /var/www/.ssh && chown 33:33 /var/www/.composer
+
 EXPOSE 80
 
 STOPSIGNAL SIGTERM
