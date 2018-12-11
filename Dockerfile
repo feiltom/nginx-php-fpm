@@ -99,7 +99,7 @@ RUN sed -i "s/exec/service nginx start;exec/g" /usr/local/bin/docker-php-entrypo
 WORKDIR /var/apps/application
 RUN mkdir /var/www/.ssh && mkdir /var/www/.composer
 RUN chown 33:33 /var/www/.ssh && chown 33:33 /var/www/.composer
-
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 
 STOPSIGNAL SIGTERM
