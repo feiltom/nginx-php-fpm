@@ -99,6 +99,8 @@ WORKDIR /var/apps/application
 RUN mkdir /var/www/.ssh /var/www/.composer /var/www/ftp /var/www/ftp-extract /var/www/ftp-extract/tmp
 RUN chown 33:33 /var/www/.ssh /var/www/.composer /var/www/ftp /var/www/ftp-extract /var/www/ftp-extract/tmp
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY php.ini /usr/local/etc/php/conf.d/symfony.ini
+
 EXPOSE 80
 
 STOPSIGNAL SIGTERM
