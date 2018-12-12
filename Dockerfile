@@ -94,8 +94,7 @@ RUN set -x \
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log
-RUN sed -i "s/exec/service nginx start;exec/g" /usr/local/bin/docker-php-entrypoint
-
+COPY docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 WORKDIR /var/apps/application
 RUN mkdir /var/www/.ssh && mkdir /var/www/.composer
 RUN chown 33:33 /var/www/.ssh && chown 33:33 /var/www/.composer
