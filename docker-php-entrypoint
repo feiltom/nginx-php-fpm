@@ -2,6 +2,7 @@
 set -e
 
 echo "">.env;
+declare -p | grep -Ev 'BASHOPTS|BASH_VERSINFO|EUID|PPID|SHELLOPTS|UID' > /container.env
 su -p -l www-data -s /bin/bash -c "composer install --prefer-dist --no-interaction --optimize-autoloader"
 su -p -l www-data -s /bin/bash -c "php bin/console doctrine:migrations:migrate --no-interaction --no-debug"
 su -p -l www-data -s /bin/bash -c "php bin/console cache:warmup --env=prod --no-debug"
